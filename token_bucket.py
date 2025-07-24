@@ -10,8 +10,6 @@ class TokenBucket:
         self._lock = threading.RLock()
         self._condition = threading.Condition(self._lock)
         
-        self._refill_timer = None
-
         self._start_refill_timer()
 
         print(
@@ -28,64 +26,26 @@ class TokenBucket:
             with self._condition:
                 if self._tokens < self._capacity:
                     self._tokens += 1
-                    print(f"Refilled 1 token. Current: {self._tokens}/{self._capacity}")
+                    print(f"[Refill Thread] Refilled 1 token. Current: {self._tokens}/{self._capacity}")
                     self._condition.notify_all()
 
-    def acquire_token(self) -> bool:
+    def acquire_token(self, task_id) -> bool:
 
-        thread_name = threading.current_thread().name
-        print(f"Thread {thread_name} requesting token")
+        print(f"Thread with [Task {task_id}] requesting token")
 
         with self._condition:
 
             while self._tokens <= 0:
-
                 self._condition.wait()
 
             self._tokens -= 1
-            print(f"Thread {thread_name} acquired token. "
-                              f"Remaining: {self._tokens}/{self._capacity}")
+            print(f"Thread with [Task {task_id}] acquired token. "
+                  f"Remaining: {self._tokens}/{self._capacity}")
             return True
 
-    def shutdown(self):
-        with self._condition:
-
-            print("Shutting down TokenBucket")
-
-            if self._refill_timer:
-                self._refill_timer.cancel()
-                self._refill_timer = None
-
     def __enter__(self):
-        """Context manager entry."""
+        """Bucket Context manager entry"""
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        """Context manager exit - automatically shutdown."""
-        self.shutdown()
-
-
-if __name__ == "__main__":
-    import concurrent.futures
-
-    def worker_task(task_id: int, bucket: TokenBucket):
-        if bucket.acquire_token():
-            print(f"Task {task_id} executing...")
-            time.sleep(0.5)
-            print(f"Task {task_id} completed")
-            return f"Task {task_id} result"
-        else:
-            print(f"Task {task_id} timed out")
-            return None
-
-    with TokenBucket(capacity=5, refill_rate=1, initial_token_count=3) as bucket:
-
-        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            futures = [
-                executor.submit(worker_task, i, bucket) for i in range(5)
-            ]
-
-            for future in concurrent.futures.as_completed(futures):
-                result = future.result()
-                if result:
-                    print(f"Completed: {result}")
+        """Bucket Context manager exit"""
