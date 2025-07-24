@@ -1,0 +1,22 @@
+# Bytecode files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+.env/
+
+# IDE/editor folders
+.vscode/
+.idea/
+
+# Test and coverage
+.pytest_cache/
+.coverage
+*.log
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
