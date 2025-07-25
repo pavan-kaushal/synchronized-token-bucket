@@ -31,8 +31,9 @@ with TokenBucket(capacity=5, refill_rate=1, initial_token_count=3) as bucket:
 
         while not task_queue.empty():
             arrival, _, task = task_queue.get()
-            now = time.time() - start_time
-            wait_time = max(0, arrival - now)
+            now = time.time()
+            elapsed = now - start_time
+            wait_time = max(0, arrival - elapsed)
             if wait_time > 0:
                 time.sleep(wait_time)
 
