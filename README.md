@@ -26,6 +26,7 @@ To address these problems, a `threading.Condition` is used:
 - Employs `threading.Condition` for safe access and thread coordination
 - the `threading.RLock` blocks multiple threas from accesing a code block simultaneously
 - the `threading.Condition` acts as a wrapper around the `threading.RLock`
+- as long as the context of `threading.Condition` is locked by one thread, another thread will wait until the context is released
 
 ### `thread_pool_demo.py`
 - Simulates a real-time scenario using `ThreadPoolExecutor`
