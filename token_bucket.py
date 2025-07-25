@@ -3,12 +3,26 @@ import time
 
 class TokenBucket:
     def __init__( self, capacity: int, refill_interval: int, refill_count: int, initial_token_count: int ):
+        # Maximum tokens the bucket can hold
         self._capacity = capacity
+
+        # Current number of tokens
         self._tokens = initial_token_count
+
+        # Time interval (in seconds) between each token refill cycle.
         self._refill_interval = refill_interval
+
+        # Number of tokens to add to the bucket at each refill cycle.
         self._refill_count = refill_count
 
+        # Lock for thread safety
         self._lock = threading.RLock()
+
+        """
+        Condition variable used to coordinate access to the token bucket among multiple threads.
+        Threads that try to acquire a token when none are available will wait on this condition.
+        Once tokens are refilled, the condition is notified to wake up waiting threads.
+        """
         self._condition = threading.Condition(self._lock)
         
         self._start_refill_timer()
@@ -22,7 +36,11 @@ class TokenBucket:
         threading.Thread(target=self._refill_tokens, daemon=True).start()
 
     def _refill_tokens(self):
-        # Waits for an interval to refill the bucket with the given refill count (ex. 5 tokens in 3 seconds)
+        """
+        Periodically refills the token bucket by a specified number of tokens after each interval.
+        Note: Token availability is evaluated only at each interval; intermediate changes are not tracked.
+        Example: Adds 5 tokens every 3 seconds, regardless of usage in between.
+        """
         while True:
             time.sleep(self._refill_interval)
             with self._condition:
