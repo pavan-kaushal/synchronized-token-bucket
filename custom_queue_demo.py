@@ -27,7 +27,7 @@ for i, task in enumerate(tasks):
 
 start_time = time.time()
 
-with TokenBucket(capacity=5, refill_rate=1, initial_token_count=3) as bucket:
+with TokenBucket(capacity=5, refill_count=1, refill_interval=1, initial_token_count=3) as bucket:
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         futures = []
 
