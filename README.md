@@ -5,13 +5,14 @@
 In a multithreaded environment, when multiple threads try to acquire tokens concurrently from a shared token bucket, the following issues can occur:
 
 - Race conditions causing inconsistent token counts
-- Unfair execution order where later threads may proceed before earlier ones
-- Uncontrolled CPU usage if threads keep retrying without waiting
+- Multiple threads may read stale or conflicting token values
+- Token overuse can occur if two threads believe a token is available at the same time
+
+These issues arise due to race conditions when threads access shared state without coordination.
 
 ## Solution
 
 To address these problems, a `threading.Condition` is used:
-
 - Only one thread can access or modify the token count at a time
 - Threads that fail to get a token wait on the condition
 - When a token is added, waiting threads are notified
@@ -23,6 +24,8 @@ To address these problems, a `threading.Condition` is used:
 - Implements the token bucket logic
 - Uses a daemon thread to refill tokens periodically
 - Employs `threading.Condition` for safe access and thread coordination
+- the `threading.RLock` blocks multiple threas from accesing a code block simultaneously
+- the `threading.Condition` acts as a wrapper around the `threading.RLock`
 
 ### `thread_pool_demo.py`
 - Simulates a real-time scenario using `ThreadPoolExecutor`
@@ -30,6 +33,7 @@ To address these problems, a `threading.Condition` is used:
 - Demonstrates thread-safe usage of the token bucket
 
 ### `custom_queue_demo.py`
+- Python doesnt allow setting priorities for threads unlike Java, hence calling for this approach 
 - Adds a `PriorityQueue` to handle tasks based on arrival time
 - Ensures fair execution in the order of task arrival
 - Useful when order and predictability are required
