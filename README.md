@@ -38,3 +38,10 @@ To address these problems, a `threading.Condition` is used:
 - Adds a `PriorityQueue` to handle tasks based on arrival time
 - Ensures fair execution in the order of task arrival
 - Useful when order and predictability are required
+
+## Execution
+
+- clone the project and run python <name of the demo file>
+- or copy the `token_bucket.py` file and append the demo file code enclosed in if `__name__ == "__main__":` with indentation under the `TokenBucket` class
+
+![Token Bucket Demo](./code_image.png)
