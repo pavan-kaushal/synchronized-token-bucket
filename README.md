@@ -42,6 +42,6 @@ To address these problems, a `threading.Condition` is used:
 ## Execution
 
 - clone the project and run `python <name of the demo file>`
-- or copy the `token_bucket.py` file and append the demo file code enclosed in `if __name__ == "__main__":` with indentation under the `TokenBucket` class
+- or copy the `token_bucket.py` file and append the demo file code enclosed in `if __name__ == "__main__":` with indentation under the `TokenBucket` class and run the file in your local or an online compiler
 
 ![Token Bucket Demo](./code_image.png)
