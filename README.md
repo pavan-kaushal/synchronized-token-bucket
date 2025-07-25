@@ -14,7 +14,7 @@ To address these problems, a `threading.Condition` is used:
 
 - Only one thread can access or modify the token count at a time
 - Threads that fail to get a token wait on the condition
-- When a token is added, one waiting thread is notified
+- When a token is added, waiting threads are notified
 - This coordination ensures safe, fair, and efficient token consumption
 
 ## File Overview
