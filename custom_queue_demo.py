@@ -17,6 +17,8 @@ tasks = [
     {"id": 1, "arrival": 3, "duration": 3},
     {"id": 2, "arrival": 4, "duration": 2},
     {"id": 3, "arrival": 5, "duration": 4},
+    {"id": 4, "arrival": 5, "duration": 2},
+    {"id": 5, "arrival": 5, "duration": 1},
 ]
 
 task_queue = PriorityQueue()
@@ -26,7 +28,7 @@ for i, task in enumerate(tasks):
 start_time = time.time()
 
 with TokenBucket(capacity=5, refill_rate=1, initial_token_count=3) as bucket:
-    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         futures = []
 
         while not task_queue.empty():

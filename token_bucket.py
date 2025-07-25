@@ -13,8 +13,7 @@ class TokenBucket:
         self._start_refill_timer()
 
         print(
-            f"TokenBucket Created: capacity={capacity}, "
-            f"refill_rate={refill_rate}"
+            f"TokenBucket Created: capacity={capacity}, refill_rate={refill_rate}, initial_token_count={initial_token_count}"
         )
 
     def _start_refill_timer(self):
