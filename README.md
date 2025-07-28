@@ -36,7 +36,7 @@ To address these problems, a `threading.Condition` is used:
 ### `custom_queue_demo.py`
 - Python doesnt allow setting priorities for threads unlike Java, hence calling for this workaround 
 - Adds a `PriorityQueue` to handle tasks based on arrival time
-- Ensures fair execution in the order of task arrival
+- to Ensure fair execution in the order of task arrival setting priorities at thread level is required
 - Useful when multiple producers are generating tasks dynamically
 - does not guarantee order of execution when multiple tasks arrive at the same time or tasks arrive between the refill cycles
 
