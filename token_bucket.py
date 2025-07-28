@@ -45,7 +45,7 @@ class TokenBucket:
             time.sleep(self._refill_interval)
             with self._condition:
                 if self._tokens < self._capacity:
-                    self._tokens = max(self._tokens + self._refill_count, self._capacity)
+                    self._tokens = min(self._tokens + self._refill_count, self._capacity)
                     print(f"[Refill Thread] Refilled 1 token. Current: {self._tokens}/{self._capacity}")
                     self._condition.notify_all()
 
@@ -53,16 +53,21 @@ class TokenBucket:
         # Called by threads when they need to acquire a token
         print(f"Thread with [Task {task_id}] requesting token")
 
-        with self._condition:
-            # Wait if there are no tokens available
-            while self._tokens <= 0:
-                self._condition.wait()
+        try:
+            with self._condition:
+                # Wait if there are no tokens available
+                while self._tokens <= 0:
+                    self._condition.wait()
 
-            # Consume a token and proceed
-            self._tokens -= 1
-            print(f"Thread with [Task {task_id}] acquired token. "
-                  f"Remaining: {self._tokens}/{self._capacity}")
-            return True
+                # Consume a token and proceed
+                self._tokens -= 1
+                print(f"Thread with [Task {task_id}] acquired token. "
+                    f"Remaining: {self._tokens}/{self._capacity}")
+                return True
+        except Exception as e:
+            print(f"Thread with [Task {task_id}] failed to acquire token, error: {e}")
+            return False
+
 
     def __enter__(self):
         """Bucket Context manager entry"""
