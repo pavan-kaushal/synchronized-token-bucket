@@ -37,7 +37,7 @@ To address these problems, a `threading.Condition` is used:
 - Python doesnt allow setting priorities for threads unlike Java, hence calling for this approach 
 - Adds a `PriorityQueue` to handle tasks based on arrival time
 - Ensures fair execution in the order of task arrival
-- Useful when order and predictability are required
+- Useful when multiple producers are generating tasks dynamically
 
 ## Execution
 
