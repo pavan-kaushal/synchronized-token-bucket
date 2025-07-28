@@ -20,12 +20,13 @@ def worker_task(task_id: int, duration: int, bucket: TokenBucket):
         return None
 
 # Task list with arrival delays and durations ( arrival at 0 means immediate arrival )
+# make sure arrival is already sorted to ensure wait time logic works
 tasks = [
     {"id": 1, "arrival": 0, "duration": 3},
     {"id": 2, "arrival": 1, "duration": 2},
     {"id": 3, "arrival": 1, "duration": 1},
-    {"id": 4, "arrival": 0, "duration": 1},
-    {"id": 5, "arrival": 0, "duration": 1},
+    {"id": 4, "arrival": 2, "duration": 1},
+    {"id": 5, "arrival": 3, "duration": 1},
 ]
 
 start_time = time.time()
