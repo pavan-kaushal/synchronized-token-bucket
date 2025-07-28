@@ -57,6 +57,10 @@ class TokenBucket:
             with self._condition:
                 # Wait if there are no tokens available
                 while self._tokens <= 0:
+                    """
+                    using wait() inside this block releases the lock and makes the thread go to sleep. 
+                    waiting to be notified by the refill tokens thread
+                    """
                     self._condition.wait()
 
                 # Consume a token and proceed
