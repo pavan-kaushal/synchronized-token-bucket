@@ -34,9 +34,13 @@ To address these problems, a `threading.Condition` is used:
 - Demonstrates thread-safe usage of the token bucket
 
 ### `custom_queue_demo.py`
-- Python doesnt allow setting priorities for threads unlike Java, hence calling for this workaround 
 - Adds a `PriorityQueue` to handle tasks based on arrival time
 - Useful when multiple producers are generating tasks dynamically ( each producer can add their tasks to the priority queue ) 
+
+## Limitations
+
+- Python doesnt allow setting priorities for threads unlike Java
+- if thread priorities are not set any one of the threads waiting for a notification will execute randomly
 - does not guarantee order of execution when multiple tasks arrive at the same time or tasks arrive between the refill cycles
 - to Ensure fair execution in the order of task arrival setting priorities at thread level is required which isnt supported in python
 
