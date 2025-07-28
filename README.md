@@ -35,7 +35,7 @@ To address these problems, a `threading.Condition` is used:
 
 ### `custom_queue_demo.py`
 - Adds a `PriorityQueue` to handle tasks based on arrival time
-- Useful when multiple producers are generating tasks dynamically ( each producer can add their tasks to the priority queue ) 
+- Useful when multiple producers are generating tasks dynamically ( each producer can add their tasks to the priority queue which can be moved to a singleton class for modularity ) 
 
 ## Limitations
 
