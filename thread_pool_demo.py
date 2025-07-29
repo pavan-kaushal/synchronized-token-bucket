@@ -51,7 +51,7 @@ with TokenBucket(capacity=5, refill_count=1, refill_interval=1, initial_token_co
             Tasks will start executing immediately if threads are available
             """
             futures.append(
-                executor.submit(worker_task, task["id"], 0, task["duration"], bucket)
+                executor.submit(worker_task, task["id"], task["duration"], bucket)
             )
 
         # Wait for all submitted tasks to complete and print results
